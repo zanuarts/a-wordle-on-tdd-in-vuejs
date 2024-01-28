@@ -10,18 +10,20 @@ describe("WordleBoard", () => {
     wrapper = mount(WordleBoard, { props: { wordOfTheDay } });
   })
 
-  test("When the user make a guess that matches the word of the day, then a victory message appears", async () => {
+  async function playerSubmitsGuess(guess: string){
     const guessInput = wrapper.find("input[type=text]");
-    await guessInput.setValue(wordOfTheDay);
+    await guessInput.setValue(guess);
     await guessInput.trigger("keydown.enter");
+  }
+
+  test("When the user make a guess that matches the word of the day, then a victory message appears", async () => {
+    await playerSubmitsGuess(wordOfTheDay)
 
     expect(wrapper.text()).toContain(VICTORY_MESSAGE);
   });
 
   test("If the user makes a guess that is incorrect, then a defeat message appears", async () => {
-    const guessInput = wrapper.find("input[type=text]");
-    await guessInput.setValue("WRONG");
-    await guessInput.trigger("keydown.enter");
+    await playerSubmitsGuess("WRONG")
 
     expect(wrapper.text()).toContain(DEFEAT_MESSAGE);
   });
