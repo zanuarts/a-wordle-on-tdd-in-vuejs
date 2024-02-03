@@ -1,6 +1,7 @@
 import { mount } from "@vue/test-utils";
 import WordleBoard from "../WordleBoard.vue";
 import { VICTORY_MESSAGE, DEFEAT_MESSAGE } from "@/settings";
+import { log } from "console";
 
 describe("WordleBoard", () => {
   const wordOfTheDay = "TESTS";
@@ -36,12 +37,23 @@ describe("WordleBoard", () => {
   });
 
   describe("Rules for defining the word of the day", () => {
-    test.each(["FLY", "tests", "QWERT"])(
-      "If '%s' provided, a warning is emitted",
-      async (wordOfTheDay) => {
+    test.each([
+      { wordOfTheDay: "FLY", reason: "word-of-the-day must have 5 characters" },
+      {
+        wordOfTheDay: "test",
+        reason: "word-of-the-day must be all in uppercase",
+      },
+      {
+        wordOfTheDay: "QWERT",
+        reason: "word-of-the-day must be a valid English word",
+      },
+    ])(
+      "Since $reason: $wordOfTheDay is invalid, therefore a warning must be emitted",
+      async (testCase) => {
+        console.log(testCase)
         console.warn = vi.fn();
 
-        mount(WordleBoard, { props: { wordOfTheDay: wordOfTheDay } });
+        mount(WordleBoard, { props: { wordOfTheDay: testCase.wordOfTheDay } });
 
         expect(console.warn).toHaveBeenCalled();
       }
