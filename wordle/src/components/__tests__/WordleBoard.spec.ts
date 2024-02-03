@@ -38,10 +38,10 @@ describe("WordleBoard", () => {
   describe("Rules for defining the word of the day", () => {
     test.each(["FLY", "tests", "QWERT"])(
       "If '%s' provided, a warning is emitted",
-      async () => {
+      async (wordOfTheDay) => {
         console.warn = vi.fn();
 
-        mount(WordleBoard, { props: { wordOfTheDay: "FLY" } });
+        mount(WordleBoard, { props: { wordOfTheDay: wordOfTheDay } });
 
         expect(console.warn).toHaveBeenCalled();
       }
