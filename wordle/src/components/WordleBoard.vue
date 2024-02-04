@@ -19,7 +19,7 @@ const guessesSubmitted = ref<string[]>([]);
   <main>
     <guess-input @guess-submitted="(guess) => (guessesSubmitted.push(guess))" />
     <p
-      v-if="guessesSubmitted.length > MAX_GUESSES_COUNT || guessesSubmitted.includes(wordOfTheDay)"
+      v-if="guessesSubmitted.length >= MAX_GUESSES_COUNT || guessesSubmitted.includes(wordOfTheDay)"
       class="end-of-game-message"
       v-text="
         guessesSubmitted.includes(wordOfTheDay) ? VICTORY_MESSAGE : DEFEAT_MESSAGE
