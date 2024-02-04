@@ -72,13 +72,20 @@ describe("WordleBoard", () => {
 
       expect(wrapper.text()).toContain(VICTORY_MESSAGE);
     });
-    test.todo("Player guesses can only be submitted if they are real words", async() => {
-      await playerSubmitsGuess("QWERT")
+    test.todo(
+      "Player guesses can only be submitted if they are real words",
+      async () => {
+        await playerSubmitsGuess("QWERT");
 
-      expect(wrapper.text()).not.toContain(VICTORY_MESSAGE);
-      expect(wrapper.text()).not.toContain(DEFEAT_MESSAGE);
+        expect(wrapper.text()).not.toContain(VICTORY_MESSAGE);
+        expect(wrapper.text()).not.toContain(DEFEAT_MESSAGE);
+      }
+    );
+    test("Player guesses are not case-sensitive", async () => {
+      await playerSubmitsGuess(wordOfTheDay.toLowerCase())
+
+      expect(wrapper.text()).toContain(VICTORY_MESSAGE);
     });
-    test.todo("Player guesses are not case-sensitive");
     test.todo("Player guesses can only contain letters");
   });
 });
