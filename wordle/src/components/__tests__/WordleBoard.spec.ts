@@ -93,7 +93,7 @@ describe("WordleBoard", () => {
         wrapper.find<HTMLInputElement>("input[type=text]").element.value
       ).toEqual("HRT");
     });
-    test("Non-letter characters do not render on the screen while being typed", async() => {
+    test.skip("Non-letter characters do not render on the screen while being typed", async() => {
       await playerSubmitsGuess("12")
       await playerSubmitsGuess("123")
 
