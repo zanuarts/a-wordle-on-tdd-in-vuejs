@@ -1,11 +1,11 @@
-<script setup lang="ts">
-import { VICTORY_MESSAGE, DEFEAT_MESSAGE, MAX_GUESSES_COUNT } from "@/settings";
+<script lang="ts" setup>
+import { DEFEAT_MESSAGE, MAX_GUESSES_COUNT, VICTORY_MESSAGE } from "@/settings";
 import englishWords from "@/englishWordsWith5Letters.json";
-import { ref } from "vue";
-import GuessInput from "./GuessInput.vue";
+import { computed, ref } from "vue";
+import GuessInput from "@/components/GuessInput.vue";
 import GuessView from "@/components/GuessView.vue";
 
-defineProps({
+const props = defineProps({
   wordOfTheDay: {
     type: String,
     required: true,
@@ -14,6 +14,18 @@ defineProps({
 });
 
 const guessesSubmitted = ref<string[]>([]);
+
+const isGameOver = computed(
+  () =>
+    guessesSubmitted.value.length === MAX_GUESSES_COUNT ||
+    guessesSubmitted.value.includes(props.wordOfTheDay)
+);
+
+const countOfEmptyGuesses = computed(() => {
+  const guessesRemaining = MAX_GUESSES_COUNT - guessesSubmitted.value.length;
+
+  return isGameOver.value ? guessesRemaining : guessesRemaining - 1;
+});
 </script>
 
 <template>
@@ -22,13 +34,19 @@ const guessesSubmitted = ref<string[]>([]);
       <li v-for="(guess, index) in guessesSubmitted" :key="`${index}-${guess}`">
         <guess-view :guess="guess" />
       </li>
+      <li>
+        <guess-input
+          :disabled="isGameOver"
+          @guess-submitted="(guess) => guessesSubmitted.push(guess)"
+        />
+      </li>
+      <li v-for="i in countOfEmptyGuesses" :key="`remaining-guess-${i}`">
+        <guess-view guess="" />
+      </li>
     </ul>
-    <guess-input @guess-submitted="(guess) => guessesSubmitted.push(guess)" />
+
     <p
-      v-if="
-        guessesSubmitted.length >= MAX_GUESSES_COUNT ||
-        guessesSubmitted.includes(wordOfTheDay)
-      "
+      v-if="isGameOver"
       class="end-of-game-message"
       v-text="
         guessesSubmitted.includes(wordOfTheDay)
@@ -46,6 +64,7 @@ main {
   align-items: center;
   margin-top: 3rem;
 }
+
 .end-of-game-message {
   font-size: 3rem;
   animation: end-of-game-message-animation 700ms forwards;

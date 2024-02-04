@@ -1,8 +1,10 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { WORD_SIZE } from "@/settings";
 import englishWords from "@/englishWordsWith5Letters.json";
-import { ref, computed } from "vue";
+import { computed, ref } from "vue";
 import GuessView from "@/components/GuessView.vue";
+
+withDefaults(defineProps<{ disabled?: boolean }>(), { disabled: false });
 
 const guessInProgress = ref<string | null>(null);
 const emit = defineEmits<{
@@ -34,15 +36,17 @@ function onSubmit() {
 </script>
 
 <template>
-  <guess-view :guess="formattedGuessInProgress" />
+  <guess-view v-if="!disabled" :guess="formattedGuessInProgress" />
 
   <input
-    type="text"
     v-model="formattedGuessInProgress"
     :maxlength="WORD_SIZE"
-    @keydown.enter="onSubmit"
+    :disabled="disabled"
+    aria-label="Make your guess for the word of the day!"
     autofocus
     @blur="({target}) => (target as HTMLInputElement).focus()"
+    type="text"
+    @keydown.enter="onSubmit"
   />
 </template>
 
