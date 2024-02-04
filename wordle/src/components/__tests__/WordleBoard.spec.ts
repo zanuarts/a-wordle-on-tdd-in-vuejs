@@ -140,6 +140,14 @@ describe("WordleBoard", () => {
         wrapper.find<HTMLInputElement>("input[type=text]").element.value
       ).toEqual("");
     });
+
+    test("the input gets cleared after each submission", async () => {
+      await playerSubmitsGuess("WRONG");
+
+      expect(
+        wrapper.find<HTMLInputElement>("input[type=text]").element.value
+      ).toEqual("");
+    });
   });
 
   test("all previous guesses done by the player are visible in the page", async () => {
