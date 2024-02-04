@@ -1,6 +1,11 @@
 import { mount } from "@vue/test-utils";
 import WordleBoard from "../WordleBoard.vue";
-import { VICTORY_MESSAGE, DEFEAT_MESSAGE, WORD_SIZE, MAX_GUESSES_COUNT } from "@/settings";
+import {
+  VICTORY_MESSAGE,
+  DEFEAT_MESSAGE,
+  WORD_SIZE,
+  MAX_GUESSES_COUNT,
+} from "@/settings";
 
 describe("WordleBoard", () => {
   const wordOfTheDay = "TESTS";
@@ -23,25 +28,22 @@ describe("WordleBoard", () => {
       expect(wrapper.text()).toContain(VICTORY_MESSAGE);
     });
 
-    describe.each([
-      { numberOfGuesses: 0, shouldSeeDefeatMessage: false },
-      { numberOfGuesses: 1, shouldSeeDefeatMessage: false },
-      { numberOfGuesses: 2, shouldSeeDefeatMessage: false },
-      { numberOfGuesses: 3, shouldSeeDefeatMessage: false },
-      { numberOfGuesses: 4, shouldSeeDefeatMessage: false },
-      { numberOfGuesses: 5, shouldSeeDefeatMessage: false },
-      { numberOfGuesses: MAX_GUESSES_COUNT, shouldSeeDefeatMessage: true },
-    ])(
-      `a defeat message should appear if the player makes incorrect guesses ${MAX_GUESSES_COUNT} times in a row`,
-      ({ numberOfGuesses, shouldSeeDefeatMessage }) => {
-        test(`therefore for ${numberOfGuesses} guess(es), a defeat message should ${
-          shouldSeeDefeatMessage ? "" : "not"
+    describe.each(
+      Array.from({ length: MAX_GUESSES_COUNT + 1 }, (_, numberOfGuesses) => ({
+        numberOfGuesses,
+        shouldSeeTheDefeatMessage: numberOfGuesses === MAX_GUESSES_COUNT,
+      }))
+    )(
+      `a defeat message should appear if the player makes incorrect guesses ${MAX_GUESSES_COUNT} times`,
+      ({ numberOfGuesses, shouldSeeTheDefeatMessage }) => {
+        test(`therefore, for ${numberOfGuesses} guess(es) a defeat message should ${
+          shouldSeeTheDefeatMessage ? "" : "not"
         } appear`, async () => {
           for (let i = 0; i < numberOfGuesses; i++) {
             await playerSubmitsGuess("WRONG");
           }
 
-          if (shouldSeeDefeatMessage) {
+          if (shouldSeeTheDefeatMessage) {
             expect(wrapper.text()).toContain(DEFEAT_MESSAGE);
           } else {
             expect(wrapper.text()).not.toContain(DEFEAT_MESSAGE);
