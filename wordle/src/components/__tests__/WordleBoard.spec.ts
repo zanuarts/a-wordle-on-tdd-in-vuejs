@@ -39,7 +39,7 @@ describe("WordleBoard", () => {
   describe("Rules for defining the word of the day", () => {
     beforeEach(() => {
       console.warn = vi.fn();
-    })
+    });
 
     test.each([
       { wordOfTheDay: "FLY", reason: "word-of-the-day must have 5 characters" },
@@ -68,7 +68,11 @@ describe("WordleBoard", () => {
   });
 
   describe("Player input", () => {
-    test.todo("Player guesses are limited to 5 letters");
+    test("Player guesses are limited to 5 letters", async () => {
+      await playerSubmitsGuess(wordOfTheDay + "EXTRA");
+
+      expect(wrapper.text()).toContain(VICTORY_MESSAGE);
+    });
     test.todo("Player guesses can only be submitted if they are real words");
     test.todo("Player guesses are not case-sensitive");
     test.todo("Player guesses can only contain letters");
