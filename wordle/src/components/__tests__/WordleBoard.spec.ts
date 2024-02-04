@@ -82,14 +82,16 @@ describe("WordleBoard", () => {
       }
     );
     test("Player guesses are not case-sensitive", async () => {
-      await playerSubmitsGuess(wordOfTheDay.toLowerCase())
+      await playerSubmitsGuess(wordOfTheDay.toLowerCase());
 
       expect(wrapper.text()).toContain(VICTORY_MESSAGE);
     });
-    test("Player guesses can only contain letters",async () => {
-      await playerSubmitsGuess("H3!RT")
+    test("Player guesses can only contain letters", async () => {
+      await playerSubmitsGuess("H3!RT");
 
-      expect(wrapper.find<HTMLInputElement>('input[type=text]').element.value).toEqual('HRT')
+      expect(
+        wrapper.find<HTMLInputElement>("input[type=text]").element.value
+      ).toEqual("HRT");
     });
   });
 });
