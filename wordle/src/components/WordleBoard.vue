@@ -19,6 +19,7 @@ const guessSubmitted = ref("");
     <guess-input @guess-submitted="(guess) => (guessSubmitted = guess)" />
     <p
       v-if="guessSubmitted.length > 0"
+      class="end-of-game-message"
       v-text="
         guessSubmitted === wordOfTheDay ? VICTORY_MESSAGE : DEFEAT_MESSAGE
       "
