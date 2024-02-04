@@ -20,14 +20,10 @@ const formattedGuessInProgress = computed<string>({
   set(rawValue: string) {
     guessInProgress.value = null;
 
-    console.log(guessInProgress.value);
-
     guessInProgress.value = rawValue
       .slice(0, WORD_SIZE)
       .toUpperCase()
       .replace(/[^A-Z]+/gi, "");
-
-    console.log(guessInProgress.value);
   },
 });
 
