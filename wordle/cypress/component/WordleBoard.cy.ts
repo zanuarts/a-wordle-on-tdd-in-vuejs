@@ -17,4 +17,5 @@ describe("<WordleBoard />", () => {
         cy.focused().type("{enter}")
 
         cy.contains(VICTORY_MESSAGE)
+    })
 });
