@@ -1,0 +1,6 @@
+{
+  "include": ["**/*.ts", "../src/**/*.vue"],
+  "compilerOptions": {
+    "types": ["cypress"]
+  }
+}
